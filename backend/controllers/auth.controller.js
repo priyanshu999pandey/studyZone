@@ -53,8 +53,8 @@ export const signUp = async (req, res) => {
 
     return res.status(201).json({
         message:"User created successfully!!",
-        error:true,
-        success:false,
+        error:false,
+        success:true,
         data:user
     })
 
@@ -80,8 +80,9 @@ export const login = async (req, res) => {
         success: false,
       });
     }
+    
 
-    const isMatch = bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({
         message: "Incorrect password",
@@ -89,6 +90,7 @@ export const login = async (req, res) => {
         success: false,
       });
     }
+    console.log("paswword m--",isMatch);
 
     let token = genToken(user._id);
     console.log("ttttt",token)
@@ -102,8 +104,8 @@ export const login = async (req, res) => {
 
      return res.status(200).json({
         message:"LoggedIn successfully!!",
-        error:true,
-        success:false,
+        error:false,
+        success:true,
         data:user,
         token:token
     })
@@ -126,7 +128,7 @@ export const logout = (req, res) => {
     });
 
     return res.status(200).json({
-      message: "Logout successful",
+      message: "Logout successfull",
       error:false,
       success: true,
     });

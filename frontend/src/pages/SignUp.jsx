@@ -3,24 +3,25 @@ import { Eye, EyeOff } from "lucide-react";
 import img from "../assets/szlogo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import toast from "react-hot-toast"
-  import ClipLoader from "react-spinners/ClipLoader";
+import toast from "react-hot-toast";
+import ClipLoader from "react-spinners/ClipLoader";
+import { setUserData } from "../redux/userSlice";
+import { useDispatch } from "react-redux";
 
-  const SignUp = () => {
-
-    const navigate = useNavigate()
-
+const SignUp = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState("student"); // student | educator
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const handleSignup = async () => {
     try {
-        setLoading(true)
-         const res = await axios.post(
+      setLoading(true);
+      const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/signup`,
         {
           name,
@@ -35,23 +36,23 @@ import toast from "react-hot-toast"
 
       console.log(res.data);
 
-      if(res?.data?.success){
-         toast.success(res?.data?.message)
-         navigate(`/`)
-      }else{
-         toast.error(res?.data?.message)
+      if (res?.data?.success) {
+        dispatch(setUserData(res?.data?.data))
+        toast.success(res?.data?.message);
+        navigate(`/`);
+      } else {
+        toast.error(res?.data?.message);
       }
-      
     } catch (error) {
-       console.log(error)
-       toast.error(error?.response?.data?.message)
-    //    
-    }finally{
-      setLoading(false)
+      console.log(error);
+      toast.error(error?.response?.data?.message);
+      //
+    } finally {
+      setLoading(false);
       setName("");
       setEmail("");
       setPassword("");
-      setRole("student")
+      setRole("student");
     }
   };
 
@@ -71,7 +72,6 @@ import toast from "react-hot-toast"
               <label className="text-sm font-medium">Name</label>
               <input
                 type="text"
-                
                 placeholder="Enter your name"
                 className=" focus-within: outline-none w-full mt-1 px-4 py-2 border rounded-lg  focus:ring-2 focus:ring-red-400"
                 onChange={(e) => setName(e.target.value)}
@@ -150,9 +150,8 @@ import toast from "react-hot-toast"
               disabled={loading}
               className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-900"
             >
-                {loading ? <ClipLoader size={20} color="#fff" /> : "Sign up"}
+              {loading ? <ClipLoader size={20} color="#fff" /> : "Sign up"}
             </button>
-          
 
             {/* OR */}
             <div className="flex items-center my-6">

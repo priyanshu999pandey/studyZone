@@ -5,11 +5,14 @@ import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { store } from "./redux/store.js";
 import { Provider } from "react-redux";
+import AppContextProvider from "./context/AppContextProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Provider store={store}>
-      <App />
+      <AppContextProvider>
+        <App />
+      </AppContextProvider>
     </Provider>
     <Toaster position="top-right" reverseOrder={false} />
   </BrowserRouter>

@@ -5,8 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ClipLoader from "react-spinners/ClipLoader";
+import { setUserData } from "../redux/userSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
+    const dispatch = useDispatch()
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -29,7 +32,8 @@ const Login = () => {
 
       console.log(res.data);
 
-      if (res?.data?.success) {
+      if (res?.data?.success){
+        dispatch(setUserData(res?.data?.data))
         toast.success(res?.data?.message);
         navigate("/");
       } else {

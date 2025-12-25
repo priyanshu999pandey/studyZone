@@ -11,7 +11,9 @@ createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Provider store={store}>
       <AppContextProvider>
-        <App />
+        <div className="daral">
+          <App />
+        </div>
       </AppContextProvider>
     </Provider>
     <Toaster position="top-right" reverseOrder={false} />

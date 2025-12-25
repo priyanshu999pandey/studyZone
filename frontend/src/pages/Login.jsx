@@ -9,7 +9,7 @@ import { setUserData } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
 
 const Login = () => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -56,7 +56,7 @@ const Login = () => {
       {/* MAIN CARD */}
       <div className="w-full max-w-4xl min-h-130 bg-white rounded-2xl shadow-xl overflow-hidden flex">
         {/* LEFT – IMAGE */}
-        <div className="hidden md:flex w-1/2 items-center justify-center bg-gradient-to-br from-black to-red-800">
+        <div className="hidden md:flex w-1/2 items-center justify-center bg-linear-to-br from-black to-red-800">
           <h1 className="text-white text-4xl font-bold text-center px-6">
             <img src={img} className="animate-bounce" />
             Welcome Back 🚀

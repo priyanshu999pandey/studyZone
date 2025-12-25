@@ -1,7 +1,52 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Share+Tech&display=swap');
 @import "tailwindcss";
 
-*{
- font-family: "Outfit", sans-serif;
+* {
+  font-family: "Outfit", sans-serif;
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ======================= */
+/* 🌸 LIGHT MODE (ROSE)    */
+/* ======================= */
+@theme {
+  /* 🎨 Brand / Action */
+  --color-primary:#f6e8ee;        /* pink (trust, education) */
+  --color-secondary: #e7b3c4;      /* sky-500 */
+  --color-accent: #c08497;         /* green-500 (progress, success) */
+
+  /* 📝 Text */
+  --color-text-primary: #0f172a;   /* slate-900 */
+  --color-text-secondary: #334155; /* slate-700 */
+  --color-text-muted: #64748b;     /* slate-500 */
+
+  /* 📦 Background */
+  --color-surface: #f8fafc;        /* slate-50 */
+  --color-surface-muted: #e2e8f0;  /* slate-200 */
+
+  /* ⚠️ States */
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-error: #dc2626;
+}
+
+
+/* ======================= */
+/* 🌙 DARK MODE (TAILWIND DEFAULT) */
+/* ======================= */
+.dark {
+  /* 🎨 Brand */
+  --color-primary: #8e01017e;        /* blue-400 */
+  --color-secondary: #520000;      /* sky-400 */
+  --color-accent: #300101;         /* green-400 */
+
+  /* 📝 Text */
+  --color-text-primary: #e5e7eb;   /* gray-200 */
+  --color-text-secondary: #9ca3af; /* gray-400 */
+  --color-text-muted: #6b7280;     /* gray-500 */
+
+  /* 📦 Background */
+  --color-surface: #0b0000;        /* slate-950 */
+  --color-surface-muted: #2e0002;  /* deep dark cards */
+}

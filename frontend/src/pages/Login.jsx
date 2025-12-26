@@ -16,7 +16,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault()
     try {
       setLoading(true);
       const res = await axios.post(
@@ -111,9 +112,11 @@ const Login = () => {
               {loading ? <ClipLoader size={20} color="#fff" /> : "Login"}
             </button>
 
+            <Link to={"/send-otp"} >
             <p className="px-3 text-center my-6  text-gray-500 hover:text-red-500">
-              Forget your password?
-            </p>
+               Forget your password?
+             </p>
+            </Link>
 
             <div className="flex items-center my-6">
               <div className="flex-1 h-px bg-gray-300" />

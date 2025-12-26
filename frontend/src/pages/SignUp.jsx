@@ -180,7 +180,7 @@ const SignUp = () => {
         </div>
 
         {/* RIGHT – IMAGE */}
-        <div className="hidden md:flex w-1/2 items-center justify-center bg-gradient-to-br from-black to-red-800">
+        <div className="hidden md:flex w-1/2 items-center justify-center bg-linear-to-br from-black to-red-800">
           <h1 className="text-white text-4xl font-bold text-center px-6">
             <img src={img} className="animate-bounce" />
             Welcome to <br /> Your Journey 🚀

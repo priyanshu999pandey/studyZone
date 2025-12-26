@@ -6,6 +6,9 @@ import SignUp from "./pages/SignUp";
 import MyProfile from "./pages/MyProfile";
 import DashBoard from "./pages/DashBoard";
 import { useSelector } from "react-redux";
+import SendOtp from "./pages/SendOtp";
+import VerifyOtp from "./pages/VerifyOtp";
+import ResetPassword from "./pages/ResetPassword";
 
 const App = () => {
   const user = useSelector((store) => store.user.userData);
@@ -43,6 +46,9 @@ const App = () => {
             )
           }
         />
+        <Route path="/send-otp" element={<SendOtp />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </div>
   );

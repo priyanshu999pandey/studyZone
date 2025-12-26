@@ -28,7 +28,13 @@ const userSchema = new mongoose.Schema({
     enrolledCourses:[{
         type:mongoose.Schema.ObjectId,
         ref:"Course"
-    }]
+    }],
+    otp:{
+      type:String
+    },
+    otpExpiry:{
+      type:Date
+    }
 
 },{
     timestamps:true

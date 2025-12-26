@@ -2,6 +2,10 @@ import User from "../models/user.model.js";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import genToken from "../config/token.js";
+import crypto from "crypto"
+import sendEmail from "../utills/sendEmail.js";
+import { error } from "console";
+
 
 
 export const signUp = async (req, res) => {
@@ -119,7 +123,7 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = (req, res) => {
+export const logout = async(req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
@@ -140,4 +144,166 @@ export const logout = (req, res) => {
     });
   }
 };
+
+export const sendOTP = async(req,res)=>{
+  try {
+     const {email} = req.body;
+
+     const otp = crypto.randomInt(100000,999999).toString();
+
+     const user = await User.findOneAndUpdate({email},{
+        otp:otp,
+        otpExpiry: Date.now()+10*60*1000 
+     })
+     if(!user){
+      return res.status(404).json({
+        message:"User Not found",
+        success:false,
+        errror:true
+      })
+     }
+
+     console.log("save otp in db",user);
+
+     
+
+   
+     await sendEmail(
+      email,
+      "Password Reset OTP",
+
+      `
+<h2 style="color:#2563eb; margin-bottom:8px;">
+  StudyZone
+</h2>
+
+<p style="font-size:16px; color:#0f172a;">
+  You requested to reset your password.
+</p>
+
+<h2 style="
+  font-size:28px;
+  letter-spacing:4px;
+  color:#2563eb;
+  margin:16px 0;
+">
+  ${otp}
+</h2>
+
+<p style="font-size:14px; color:#475569;">
+  ⏳ This OTP is valid for <strong>10 minutes</strong>.
+</p>
+
+<p style="font-size:13px; color:#64748b;">
+  If you didn’t request this, please ignore this email.
+</p>
+`
+)
+
+res.status(200).json({
+   message:"OTP send successfully",
+   success:true,
+   error:false,
+   otp
+})
+
+  } catch (error) {
+       return res.status(500).json({
+      message: `send email error ${error.message}` || "Internal server error",
+      error: true,
+      success: false,
+    });
+  }
+}
+
+export const verifyOTP = async(req,res)=>{
+  try {
+    const {email,otp} = req.body;
+
+     if (!email || !otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and OTP are required",
+      });
+    }
+    
+    const user = await User.findOne({email});
+     if(!user){
+      return res.status(404).json({
+        message:"Invalid OTP",
+        success:false,
+        errror:true
+      })
+     }
+     console.log("OTP",user);
+
+     if(user.otpExpiry < Date.now()){
+         return res.status(400).json({
+          message:"OTP expired",
+          success:false,
+          error:true
+         })
+     }
+
+     if(user.otp !== otp){
+      return res.status(400).json({
+        message:"Invalid OTP",
+        success:false,
+        error:true
+      })
+     }
+
+     user.otp = undefined
+     user.otpExpiry = undefined
+     await user.save();
+
+     return res.status(200).json({
+      message:"OTP verified successfully",
+      success:true,
+      error:false,
+     })
+
+    
+  } catch (error) {
+     return res.status(500).json({
+      message: `verify OTP error ${error.message}` || "Internal server error",
+      error: true,
+      success: false,
+    });
+  }
+}
+
+
+export const resetPassword = async(req,res)=>{
+  try {
+     const {password,email} = req.body;
+
+     if(!password || !email){
+      return res.status(400).json({
+        message:"All field should be filled",
+        success:false,
+        error:true
+      })
+     }
+
+     const hashPassword = await bcrypt.hash(password,10);
+
+     const updatedPassword = await User.findOneAndUpdate({email},{
+      password:hashPassword
+     })
+
+     return res.status(200).json({
+      message:"password updated successfully",
+      success:true,
+      error:false
+     })
+
+  } catch (error) {
+     return res.status(500).json({
+      message: `reset password error ${error.message}` || "Internal server error",
+      error: true,
+      success: false,
+    });
+  }
+}
 

@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import ClipLoader from "react-spinners/ClipLoader";
 import { setUserData } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
+import GoogleLogin from "../components/GoogleLogin";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -161,13 +162,7 @@ const SignUp = () => {
             </div>
 
             {/* GOOGLE */}
-            <button className="w-full flex items-center justify-center gap-2 border py-2 rounded-lg hover:bg-gray-100">
-              <img
-                src="https://www.svgrepo.com/show/355037/google.svg"
-                className="w-5"
-              />
-              Continue with Google
-            </button>
+           <GoogleLogin />
 
             {/* LOGIN */}
             <div className="text-center text-sm mt-6">

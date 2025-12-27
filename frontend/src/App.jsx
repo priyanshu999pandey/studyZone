@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import SendOtp from "./pages/SendOtp";
 import VerifyOtp from "./pages/VerifyOtp";
 import ResetPassword from "./pages/ResetPassword";
+import GoogleSelectRole from "./pages/GoogleSelectRole";
 
 const App = () => {
   const user = useSelector((store) => store.user.userData);
@@ -49,6 +50,7 @@ const App = () => {
         <Route path="/send-otp" element={<SendOtp />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/select-role" element={<GoogleSelectRole />} />
       </Routes>
     </div>
   );

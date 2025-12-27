@@ -2,11 +2,11 @@ import User from "../models/user.model.js";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import genToken from "../config/token.js";
-import crypto from "crypto"
+import crypto from "crypto";
 import sendEmail from "../utills/sendEmail.js";
 import { error } from "console";
-
-
+import axios from "axios";
+import jwt from "jsonwebtoken";
 
 export const signUp = async (req, res) => {
   try {
@@ -56,18 +56,16 @@ export const signUp = async (req, res) => {
     });
 
     return res.status(201).json({
-        message:"User created successfully!!",
-        error:false,
-        success:true,
-        data:user
-    })
-
+      message: "User created successfully!!",
+      error: false,
+      success: true,
+      data: user,
+    });
   } catch (error) {
     return res.status(500).json({
       message: `signup error ${error.message}` || "Internal server error",
       error: true,
       success: false,
-      
     });
   }
 };
@@ -84,7 +82,6 @@ export const login = async (req, res) => {
         success: false,
       });
     }
-    
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -94,10 +91,10 @@ export const login = async (req, res) => {
         success: false,
       });
     }
-    console.log("paswword m--",isMatch);
+    console.log("paswword m--", isMatch);
 
     let token = genToken(user._id);
-    console.log("ttttt",token)
+    console.log("ttttt", token);
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -106,14 +103,13 @@ export const login = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-     return res.status(200).json({
-        message:"LoggedIn successfully!!",
-        error:false,
-        success:true,
-        data:user,
-        token:token
-    })
-
+    return res.status(200).json({
+      message: "LoggedIn successfully!!",
+      error: false,
+      success: true,
+      data: user,
+      token: token,
+    });
   } catch (error) {
     return res.status(500).json({
       message: `login error ${error.message}` || "Internal server error",
@@ -123,17 +119,17 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = async(req, res) => {
+export const logout = async (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
       sameSite: "lax",
-      secure: false // localhost
+      secure: false, // localhost
     });
 
     return res.status(200).json({
       message: "Logout successfull",
-      error:false,
+      error: false,
       success: true,
     });
   } catch (error) {
@@ -145,30 +141,30 @@ export const logout = async(req, res) => {
   }
 };
 
-export const sendOTP = async(req,res)=>{
+export const sendOTP = async (req, res) => {
   try {
-     const {email} = req.body;
+    const { email } = req.body;
 
-     const otp = crypto.randomInt(100000,999999).toString();
+    const otp = crypto.randomInt(100000, 999999).toString();
 
-     const user = await User.findOneAndUpdate({email},{
-        otp:otp,
-        otpExpiry: Date.now()+10*60*1000 
-     })
-     if(!user){
+    const user = await User.findOneAndUpdate(
+      { email },
+      {
+        otp: otp,
+        otpExpiry: Date.now() + 10 * 60 * 1000,
+      }
+    );
+    if (!user) {
       return res.status(404).json({
-        message:"User Not found",
-        success:false,
-        errror:true
-      })
-     }
+        message: "User Not found",
+        success: false,
+        errror: true,
+      });
+    }
 
-     console.log("save otp in db",user);
+    console.log("save otp in db", user);
 
-     
-
-   
-     await sendEmail(
+    await sendEmail(
       email,
       "Password Reset OTP",
 
@@ -198,112 +194,236 @@ export const sendOTP = async(req,res)=>{
   If you didn’t request this, please ignore this email.
 </p>
 `
-)
+    );
 
-res.status(200).json({
-   message:"OTP send successfully",
-   success:true,
-   error:false,
-   otp
-})
-
+    res.status(200).json({
+      message: "OTP send successfully",
+      success: true,
+      error: false,
+      otp,
+    });
   } catch (error) {
-       return res.status(500).json({
+    return res.status(500).json({
       message: `send email error ${error.message}` || "Internal server error",
       error: true,
       success: false,
     });
   }
-}
+};
 
-export const verifyOTP = async(req,res)=>{
+export const verifyOTP = async (req, res) => {
   try {
-    const {email,otp} = req.body;
+    const { email, otp } = req.body;
 
-     if (!email || !otp) {
+    if (!email || !otp) {
       return res.status(400).json({
         success: false,
         message: "Email and OTP are required",
       });
     }
-    
-    const user = await User.findOne({email});
-     if(!user){
+
+    const user = await User.findOne({ email });
+    if (!user) {
       return res.status(404).json({
-        message:"Invalid OTP",
-        success:false,
-        errror:true
-      })
-     }
-     console.log("OTP",user);
+        message: "Invalid OTP",
+        success: false,
+        errror: true,
+      });
+    }
+    console.log("OTP", user);
 
-     if(user.otpExpiry < Date.now()){
-         return res.status(400).json({
-          message:"OTP expired",
-          success:false,
-          error:true
-         })
-     }
-
-     if(user.otp !== otp){
+    if (user.otpExpiry < Date.now()) {
       return res.status(400).json({
-        message:"Invalid OTP",
-        success:false,
-        error:true
-      })
-     }
+        message: "OTP expired",
+        success: false,
+        error: true,
+      });
+    }
 
-     user.otp = undefined
-     user.otpExpiry = undefined
-     await user.save();
+    if (user.otp !== otp) {
+      return res.status(400).json({
+        message: "Invalid OTP",
+        success: false,
+        error: true,
+      });
+    }
 
-     return res.status(200).json({
-      message:"OTP verified successfully",
-      success:true,
-      error:false,
-     })
+    user.otp = undefined;
+    user.otpExpiry = undefined;
+    await user.save();
 
-    
+    return res.status(200).json({
+      message: "OTP verified successfully",
+      success: true,
+      error: false,
+    });
   } catch (error) {
-     return res.status(500).json({
+    return res.status(500).json({
       message: `verify OTP error ${error.message}` || "Internal server error",
       error: true,
       success: false,
     });
   }
-}
+};
 
-
-export const resetPassword = async(req,res)=>{
+export const resetPassword = async (req, res) => {
   try {
-     const {password,email} = req.body;
+    const { password, email } = req.body;
 
-     if(!password || !email){
+    if (!password || !email) {
       return res.status(400).json({
-        message:"All field should be filled",
-        success:false,
-        error:true
+        message: "All field should be filled",
+        success: false,
+        error: true,
+      });
+    }
+
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    const updatedPassword = await User.findOneAndUpdate(
+      { email },
+      {
+        password: hashPassword,
+      }
+    );
+
+    return res.status(200).json({
+      message: "password updated successfully",
+      success: true,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message:
+        `reset password error ${error.message}` || "Internal server error",
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export const googleAuth = async (req, res) => {
+  try {
+    // 1️⃣ Frontend se auth code aata hai
+    const { code } = req.body;
+
+    // console.log("code--",code);
+
+    // 2️⃣ Google token endpoint pe request
+    const response = await axios.post("https://oauth2.googleapis.com/token", {
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      code,
+      grant_type: "authorization_code",
+      redirect_uri: "postmessage",
+    });
+
+    // console.log("response--",response);
+
+    // 3️⃣ Google se tokens milte hain
+    const { access_token, id_token } = response.data;
+
+    // 4️⃣ id_token se user info nikalo
+    const userInfo = await axios.get(
+      `https://www.googleapis.com/oauth2/v3/userinfo`,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+
+    // console.log("userinfo--",userInfo);
+    const { email, name, picture } = userInfo.data;
+
+    // 5️⃣ (Future) DB me user save / find karo
+    let user = await User.findOne({ email });
+    if (!user) {
+       user = await User.create({
+        email: email,
+        name: name,
+        photoUrl: picture,
+        password: null,
+        role: null, // 🔥 role not decided yet
+      });
+    }
+
+    // console.log("user--",user);
+
+    // 6️⃣ Apna JWT banao
+    const token = jwt.sign(
+      { userId: user?._id, email: user?.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    // console.log("Token--",token);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    
+      res.cookie("token", token, {
+        httpOnly: true, // 🔐 JS can't access
+        secure: false,
+        sameSite: "lax",
+        maxAge: 1 * 24 * 60 * 60 * 1000, // 1 days
       })
-     }
+     
 
-     const hashPassword = await bcrypt.hash(password,10);
+    // 7️⃣ Frontend ko response
+    res.status(200).json({
+      message: "google auth successfully",
+      success: true,
+      token,
+      user,
+    });
+  } catch (error) {
+    console.error("Google Auth Error:", error.response?.data || error);
+    res.status(400).json({
+      success: false,
+      message: "Google authentication failed",
+    });
+  }
+};
 
-     const updatedPassword = await User.findOneAndUpdate({email},{
-      password:hashPassword
-     })
+export const selectRole = async (req,res)=>{
+  try {
+    const userId = req.userId;
+    console.log("userId",userId);
 
-     return res.status(200).json({
-      message:"password updated successfully",
-      success:true,
-      error:false
-     })
+    const {role} = req.body;
+
+    const user = await User.findByIdAndUpdate(userId,{
+      role:role
+    },{
+      new:true
+    })
+
+    if(!user){
+      return res.status(400).json({
+        message:"unable to set Role",
+        success:false
+      })
+    }
+
+  return res.status(200).json({
+    message:"role updated successfully",
+    success:true,
+    user
+  })
 
   } catch (error) {
-     return res.status(500).json({
-      message: `reset password error ${error.message}` || "Internal server error",
+      return res.status(500).json({
+      message:
+        `select role error ${error.message}` || "Internal server error",
       error: true,
       success: false,
     });
   }
 }
-

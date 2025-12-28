@@ -50,7 +50,7 @@ const Nav = () => {
 
   console.log("Open", open);
   return (
-    <header className="p-4 relative">
+    <header className="px-8 py-4 relative">
       <nav
         className="
         flex items-center justify-between

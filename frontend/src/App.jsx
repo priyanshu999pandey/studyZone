@@ -10,6 +10,7 @@ import SendOtp from "./pages/SendOtp";
 import VerifyOtp from "./pages/VerifyOtp";
 import ResetPassword from "./pages/ResetPassword";
 import GoogleSelectRole from "./pages/GoogleSelectRole";
+import EditProfile from "./pages/EditProfile";
 
 const App = () => {
   const user = useSelector((store) => store.user.userData);
@@ -51,6 +52,7 @@ const App = () => {
         <Route path="/verify-otp" element={<VerifyOtp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/select-role" element={<GoogleSelectRole />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
       </Routes>
     </div>
   );

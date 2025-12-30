@@ -1,10 +1,10 @@
-import Course from "../models/course.model";
-import uploadOnCloudinary from "../utills/cloudinary";
+import Course from "../models/course.model.js";
+import uploadOnCloudinary from "../utills/cloudinary.js";
 
 
 export const createCourse = async(req,res)=>{
     try {
-
+        const userId  = req.userId
       const {title,category} = req.body;
       if(!title|| !category){
         return res.status(400).json({
@@ -15,12 +15,15 @@ export const createCourse = async(req,res)=>{
 
       const course = await Course.create({
         title,
-        category
+        category,
+        creator:userId
       })
       
       return res.status(200).json({
         message:"course created sucessfully",
-        success:true
+        success:true,
+        data:course
+        
       })
         
     } catch (error) {
@@ -79,7 +82,7 @@ export const getCreatorCourse = async(req,res)=>{
     return res.status(200).json({
       message:"Creator course found sucessfully",
       success:true,
-      createCourse
+      data:creatorCourses
     })
     
   } catch (error){

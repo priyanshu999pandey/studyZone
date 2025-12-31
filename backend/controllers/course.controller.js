@@ -52,7 +52,7 @@ export const getPublishedCourses = async(req,res) =>{
       message:"course founded successfully",
       success:true,
       user:userId,
-      publishedCourses,
+      data:publishedCourses,
     })
 
 
@@ -134,7 +134,7 @@ export const editCourse = async(req,res)=>{
      return res.status(200).json({
       message:"Course edit successfully",
       success:true,
-      course
+      data:course
      })
 
 
@@ -164,7 +164,7 @@ export const getCourseById = async(req,res)=>{
      return res.status(200).json({
       message:"Course Found Sucessfully",
       success:true,
-      course
+      data:course
      })
     
   } catch (error) {
@@ -204,4 +204,6 @@ export const removeCourse = async(req,res)=>{
       success: false,
     });
   }
-}
+}  
+
+

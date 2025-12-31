@@ -7,11 +7,11 @@ const courseRouter = Router();
 
 
 courseRouter.post("/createCourse",isAuth,createCourse);
-courseRouter.post("/getPublished",getPublishedCourses);
+courseRouter.get("/getPublishedCourse",getPublishedCourses);
 courseRouter.get("/getCreatorCourse",isAuth,getCreatorCourse);
 courseRouter.post("/editCourse/:courseId",isAuth, upload.single("thumbnail"), editCourse);
-courseRouter.post("getCourse/:courseId",isAuth,getCourseById);
-courseRouter.post("removeCourse/:courseId",isAuth,removeCourse);
+courseRouter.get("/getCourse/:courseId",isAuth,getCourseById);
+courseRouter.get("/removeCourse/:courseId",isAuth,removeCourse);
 
 
 export default courseRouter

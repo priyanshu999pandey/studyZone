@@ -22,12 +22,15 @@ const DarkModeToggle = () => {
       onClick={() => setDarkMode((prev) => !prev)}
         className="
     px-4 py-1.5 rounded-full
-    bg-red-950/70
-    text-white
+    bg-primary text-black
+    
     border border-white/10
-    hover:bg-red-900
+    hover:bg-accent
     transition-all duration-300
     hover:scale-105
+    dark:hover:bg-red-950/50
+    dark:bg-surface
+    dark:text-white
     "
     >
       {darkMode ? "☀ Light Mode" : "🌙 Dark Mode"}

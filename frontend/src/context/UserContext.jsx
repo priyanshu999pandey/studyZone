@@ -19,7 +19,7 @@ const UserProvider = ({children}) =>{
         `${import.meta.env.VITE_API_URL}/api/user/getcurrentuser`,
         { withCredentials: true }
       );
-       console.log("contex clg",res.data);
+      //  console.log("contex clg",res.data);
       dispatch(setUserData(res?.data?.data));
     } catch (error) {
       dispatch(clearUser());

@@ -25,8 +25,19 @@ const Profile = () => {
       {/* Back Button */}
       <div className="max-w-xl mx-auto mb-4">
         <button
-          onClick={() => navigate("/")}
-          className="flex px-6 py-2 rounded-full items-center gap-2 text-black hover:text-gray-300 transition bg-secondary dark:bg-surface-muted dark:text-white"
+          onClick={() => navigate(-1)}
+         className="
+            flex items-center gap-2
+            px-4 py-2
+            rounded-full
+            bg-secondary/80 dark:bg-surface-muted/80
+            text-black dark:text-white
+            backdrop-blur-xl
+            border border-white/10
+            shadow-md
+            hover:scale-105
+            transition-all duration-300
+          "
         >
           <IoArrowBack size={20} />
           Back

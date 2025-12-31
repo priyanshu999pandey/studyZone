@@ -16,7 +16,7 @@ const Nav = () => {
 
 
   const user = useSelector((store) => store.user.userData);
-  console.log("userData", user);
+  // console.log("userData", user);
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
@@ -32,7 +32,7 @@ const Nav = () => {
         }
       );
 
-      console.log(res.data);
+      // console.log(res.data);
 
       if (res?.data?.success){
         dispatch(clearUser())
@@ -57,7 +57,7 @@ const Nav = () => {
          px-6 py-3
         rounded-full
          bg-secondary
-        dark:bg-linear-to-br from-black to-red-800
+        dark:bg-surface-muted
         backdrop-blur-xl
         border border-white/10
         shadow-lg shadow-red-950/40
@@ -80,14 +80,19 @@ const Nav = () => {
             onClick={() => setOpen((prev) => !prev)}
             className="
             w-10 h-10 rounded-full
-            bg-red-950/70
-            text-white font-semibold
+            bg-primary
+            
+            text-black font-semibold
             flex items-center justify-center
             border border-white/10
-            hover:bg-red-900
+            dark:hover:bg-red-950
             transition-all duration-300
             hover:scale-105
             cursor-pointer
+            dark:bg-surface
+            dark:text-white
+
+            
             "
           >
             P
@@ -101,14 +106,19 @@ const Nav = () => {
           {user ? (
             <button
             onClick={handleLogout}
-              className="
-            px-4 py-1.5 rounded-full
-            bg-white text-red-950
-            font-medium
-            border border-white/20
-            hover:bg-red-900 hover:text-white
-            transition-all duration-300
-            "
+ className="
+    text-lg
+    px-4 py-1 rounded-full
+    bg-primary
+    text-black
+    border border-white/20
+    hover:bg-accent
+  dark:hover:bg-red-950/50
+    dark:bg-surface
+    dark:text-white
+    transition-all duration-300
+    hover:scale-105
+    "
             >
               Logout
             </button>

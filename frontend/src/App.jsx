@@ -4,13 +4,17 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import MyProfile from "./pages/MyProfile";
-import DashBoard from "./pages/DashBoard";
+import DashBoard from "./pages/educator/DashBoard";
 import { useSelector } from "react-redux";
 import SendOtp from "./pages/SendOtp";
 import VerifyOtp from "./pages/VerifyOtp";
 import ResetPassword from "./pages/ResetPassword";
 import GoogleSelectRole from "./pages/GoogleSelectRole";
 import EditProfile from "./pages/EditProfile";
+import Courses from "./pages/educator/Courses";
+import CreateCourse from "./pages/educator/CreateCourse";
+import EditCourse from "./pages/educator/EditCourse";
+import Nav from "./components/Nav";
 
 const App = () => {
   const user = useSelector((store) => store.user.userData);
@@ -18,6 +22,7 @@ const App = () => {
 
   return (
     <div className="w-screen min-h-screen bg-primary dark:bg-surface">
+          
       <Routes>
         <Route path="/" element={<Home />} />
 
@@ -48,6 +53,37 @@ const App = () => {
             )
           }
         />
+        <Route
+          path="/courses"
+          element={
+            user && user.role === "educator" ? (
+              <Courses />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
+          path="/create-course"
+          element={
+            user && user.role === "educator" ? (
+              <CreateCourse />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
+          path="/edit-course/:id"
+          element={
+            user && user.role === "educator" ? (
+              <EditCourse/>
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+
         <Route path="/send-otp" element={<SendOtp />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
         <Route path="/reset-password" element={<ResetPassword />} />

@@ -56,7 +56,7 @@ const ExploreCourses = () => {
             <a
               key={index}
               href={course.link}
-              className="group rounded-xl overflow-hidden bg-secondary dark:bg-surface-muted shadow hover:shadow-lg transition"
+              className="group rounded-xl overflow-hidden bg-secondary   dark:bg-surface-muted shadow hover:shadow-lg transition"
             >
               <img
                 src={course.image}

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
 import { useCourseContext } from "../../context/courseContext";
+import CourseCard from "../../components/CourseCard";
 
 const EditCourse = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const EditCourse = () => {
 
   /* ================= STATE ================= */
   const [course, setCourse] = useState(null);
+  console.log("Course",course);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -68,7 +70,7 @@ const EditCourse = () => {
         category: course.category ?? "",
         level: course.level ?? "",
         price: course.price ?? "",
-        thumbnail: null,
+        thumbnail:course.thumbnail || '',
         isPublished: course.isPublished ?? false,
       });
 
@@ -155,7 +157,7 @@ const EditCourse = () => {
         </button>
 
         <button
-          onClick={() => navigate("/lectures")}
+          onClick={() => navigate(`/create-lecture/${id}`)}
          className="
             flex items-center gap-2
             px-4 py-2
@@ -283,7 +285,7 @@ const EditCourse = () => {
                 <img
                   src={previewImage}
                   alt="Thumbnail Preview"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-scale-down"
                 />
               ) : (
                 <span className="text-sm">No image selected</span>

@@ -48,7 +48,7 @@ const Nav = () => {
     } 
   };
 
-  console.log("Open", open);
+  // console.log("Open", open);
   return (
     <header className="px-8 py-4 relative">
       <nav

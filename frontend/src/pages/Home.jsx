@@ -11,6 +11,7 @@ import { FaSackDollar } from "react-icons/fa6";
 import ExploreCourses from "../components/ExploreCourses";
 import { useSelector } from "react-redux";
 import CourseCard from "../components/CourseCard";
+import { Link } from "react-router-dom";
 
 
 
@@ -56,9 +57,9 @@ const Home = () => {
             </h1>
 
             <div className="flex flex-wrap justify-center gap-4 mt-8">
-              <button className="px-6 py-3 border rounded-xl text-white flex items-center gap-2">
+              <Link to={"/all-courses"} className="px-6 py-3 border rounded-xl text-white flex items-center gap-2" >
                 View All Courses <FaBookOpen />
-              </button>
+              </Link>
 
               <button className="px-6 py-3 rounded-xl bg-white text-black flex items-center gap-2">
                 Search With AI
@@ -104,7 +105,7 @@ const Home = () => {
                 <CourseCard
                   key={course._id}
                   title={course.title}
-                  thumbnail={course.thumbnail}
+                  thumbnail={course?.thumbnail}
                   category={course.category}
                   rating={course.rating || 4.5}
                 />

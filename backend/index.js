@@ -6,6 +6,7 @@ import authRouter from "./routes/auth.router.js";
 import cors from "cors"
 import userRouter from "./routes/user.router.js";
 import courseRouter from "./routes/course.router.js";
+import lectureRouter from "./routes/lecture.router.js";
 
  dotenv.config()
  const app = express()
@@ -18,6 +19,7 @@ import courseRouter from "./routes/course.router.js";
  app.use("/api/auth",authRouter)
  app.use("/api/user",userRouter)
  app.use("/api/course",courseRouter)
+ app.use("/api/lecture",lectureRouter)
  
  const port =process.env.PORT
 

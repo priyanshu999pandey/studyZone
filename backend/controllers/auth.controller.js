@@ -123,12 +123,12 @@ export const logout = async (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      sameSite: "lax",
-      secure: false, // localhost
+      secure: true,
+      sameSite: "none",
     });
 
     return res.status(200).json({
-      message: "Logout successfull",
+      message: "Logout successful",
       error: false,
       success: true,
     });
@@ -140,6 +140,7 @@ export const logout = async (req, res) => {
     });
   }
 };
+
 
 export const sendOTP = async (req, res) => {
   try {

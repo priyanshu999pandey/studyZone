@@ -10,7 +10,7 @@ import lectureRouter from "./routes/lecture.router.js";
 import paymentRouter from "./routes/payment.router.js";
 
  dotenv.config()
- 
+
  const app = express()
  app.use(cookieParser()); 
  app.use(express.json());
@@ -30,7 +30,5 @@ import paymentRouter from "./routes/payment.router.js";
     res.send("Hello from Server")
  })
 
- app.listen(port,()=>{
-    console.log(`server started at port ${port}`);
-    dbConnect()
- })
+dbConnect();
+export default app;

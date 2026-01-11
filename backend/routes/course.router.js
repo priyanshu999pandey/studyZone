@@ -10,7 +10,7 @@ courseRouter.post("/createCourse",isAuth,createCourse);
 courseRouter.get("/getPublishedCourse",getPublishedCourses);
 courseRouter.get("/getCreatorCourse",isAuth,getCreatorCourse);
 courseRouter.post("/editCourse/:courseId",isAuth, upload.single("thumbnail"), editCourse);
-courseRouter.get("/getCourse/:courseId",isAuth,getCourseById);
+courseRouter.get("/getCourse/:courseId",getCourseById);
 courseRouter.get("/removeCourse/:courseId",isAuth,removeCourse);
 
 

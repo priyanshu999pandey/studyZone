@@ -50,8 +50,8 @@ export const signUp = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true, // ✅ must be true on HTTPS
+      sameSite: "none", // ✅ required for cross-domain
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -98,8 +98,8 @@ export const login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true, // ✅ must be true on HTTPS
+      sameSite: "none", // ✅ required for cross-domain
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -315,7 +315,7 @@ export const googleAuth = async (req, res) => {
       client_secret: process.env.GOOGLE_CLIENT_SECRET,
       code,
       grant_type: "authorization_code",
-      redirect_uri: "https://study-zone-eight.vercel.app/api/auth/google/callback"
+      redirect_uri: "postmessage",
     });
 
     // console.log("response--",response);
@@ -339,7 +339,7 @@ export const googleAuth = async (req, res) => {
     // 5️⃣ (Future) DB me user save / find karo
     let user = await User.findOne({ email });
     if (!user) {
-       user = await User.create({
+      user = await User.create({
         email: email,
         name: name,
         photoUrl: picture,
@@ -367,9 +367,6 @@ export const googleAuth = async (req, res) => {
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-    
-      
-     
 
     // 7️⃣ Frontend ko response
     res.status(200).json({
@@ -387,38 +384,40 @@ export const googleAuth = async (req, res) => {
   }
 };
 
-export const selectRole = async (req,res)=>{
+export const selectRole = async (req, res) => {
   try {
     const userId = req.userId;
-    console.log("userId",userId);
+    console.log("userId", userId);
 
-    const {role} = req.body;
+    const { role } = req.body;
 
-    const user = await User.findByIdAndUpdate(userId,{
-      role:role
-    },{
-      new:true
-    })
+    const user = await User.findByIdAndUpdate(
+      userId,
+      {
+        role: role,
+      },
+      {
+        new: true,
+      }
+    );
 
-    if(!user){
+    if (!user) {
       return res.status(400).json({
-        message:"unable to set Role",
-        success:false
-      })
+        message: "unable to set Role",
+        success: false,
+      });
     }
 
-  return res.status(200).json({
-    message:"role updated successfully",
-    success:true,
-    user
-  })
-
+    return res.status(200).json({
+      message: "role updated successfully",
+      success: true,
+      user,
+    });
   } catch (error) {
-      return res.status(500).json({
-      message:
-        `select role error ${error.message}` || "Internal server error",
+    return res.status(500).json({
+      message: `select role error ${error.message}` || "Internal server error",
       error: true,
       success: false,
     });
   }
-}
+};

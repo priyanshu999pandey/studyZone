@@ -5,7 +5,7 @@ import { IoArrowBack } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import empty from "../../assets/empty.jpg";
 import axios from "axios";
-import { useCourseContext } from "../../context/courseContext";
+import { useCourseContext } from "../../context/CourseContext";
 
 const Courses = () => {
   const navigate = useNavigate();

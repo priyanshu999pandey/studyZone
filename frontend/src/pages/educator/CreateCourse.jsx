@@ -3,7 +3,7 @@
   import { useDispatch } from "react-redux";
   import { useNavigate } from "react-router-dom";
   import { IoArrowBack } from "react-icons/io5";
-  import { useCourseContext } from "../../context/courseContext";
+  import { useCourseContext } from "../../context/CourseContext";
 
   const CreateCourse = () => {
     const { fetchCreatorCourse } = useCourseContext();

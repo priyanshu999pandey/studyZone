@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
-import { useCourseContext } from "../../context/courseContext";
+import { useCourseContext } from "../../context/CourseContext";
 import CourseCard from "../../components/CourseCard";
 
 const EditCourse = () => {

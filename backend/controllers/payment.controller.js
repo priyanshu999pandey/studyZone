@@ -47,16 +47,14 @@ import stripe from "../config/stripe.js";
     });
   }
 };
+
 export const stripeWebhook = async(req,res)=>{
     try {
         const signature = req.headers["stripe-signature"];
 
         let event;
 
-        try{
-            
-        }
-        
+      
     } catch (error) {
          return res.status(500).json({
       message:

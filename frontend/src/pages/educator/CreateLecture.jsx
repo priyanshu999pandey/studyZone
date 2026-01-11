@@ -5,7 +5,7 @@ import { FaEdit } from "react-icons/fa";
 import axios from "axios"
 import { useDispatch, useSelector } from "react-redux";
 import { setlectureData } from "../../redux/lectureSlice";
-import { useCourseContext } from "../../context/courseContext";
+import { useCourseContext } from "../../context/CourseContext";
 import { useEffect } from "react";
 
 const CreateLecture = () => {

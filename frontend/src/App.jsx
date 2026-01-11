@@ -23,6 +23,8 @@ import { useEffect } from "react";
 import { clearUser, setUserData } from "./redux/userSlice";
 import axios from "axios"
 import { useState } from "react";
+import ViewCourse from "./pages/ViewCourse";
+import ScrollToTop from "./components/ScrollToTop";
 
 
 const App = () => {
@@ -65,7 +67,7 @@ const App = () => {
 
   return (
     <div className="w-screen min-h-screen bg-primary dark:bg-surface">
-          
+          <ScrollToTop/>
       <Routes>
         <Route path="/" element={<Home />} />
 
@@ -156,6 +158,7 @@ const App = () => {
         <Route path="/select-role" element={<GoogleSelectRole />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/all-courses" element={<AllCourses />} />
+        <Route path={`view-course/:courseId`} element={<ViewCourse />} />
       </Routes>
 
     </div>

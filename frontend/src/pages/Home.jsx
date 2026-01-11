@@ -13,26 +13,17 @@ import { useSelector } from "react-redux";
 import CourseCard from "../components/CourseCard";
 import { Link } from "react-router-dom";
 
-
-
 const Home = () => {
-
-
-  
   const courses = useSelector(
     (store) => store.course.publishedCourseData || []
   );
 
-  const courseCardData = courses.filter(
-    (c) => c?.isPublished === true
-  );
+  const courseCardData = courses.filter((c) => c?.isPublished === true);
 
   return (
     <div className="bg-primary dark:bg-surface w-full min-h-screen overflow-x-hidden">
-
       {/* ================= HERO SECTION ================= */}
       <div className="relative w-full h-[80vh] md:h-screen overflow-hidden">
-
         {/* Light Mode */}
         <img
           src={homeLight}
@@ -57,7 +48,10 @@ const Home = () => {
             </h1>
 
             <div className="flex flex-wrap justify-center gap-4 mt-8">
-              <Link to={"/all-courses"} className="px-6 py-3 border rounded-xl text-white flex items-center gap-2" >
+              <Link
+                to={"/all-courses"}
+                className="px-6 py-3 border rounded-xl text-white flex items-center gap-2"
+              >
                 View All Courses <FaBookOpen />
               </Link>
 
@@ -78,18 +72,32 @@ const Home = () => {
       {/* ================= FEATURES ================= */}
       <div className="py-10 px-6 overflow-x-hidden">
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 place-items-center dark:text-white">
-          <FeatureCard icon={<GiBurningBook size={26} />} text="20K+ Online Courses" />
-          <FeatureCard icon={<SiOpenaccess size={26} />} text="Lifetime Access" />
-          <FeatureCard icon={<GiBurningBook size={26} />} text="Lifetime Support" />
-          <FeatureCard icon={<RiUserCommunityFill size={26} />} text="Community Support" />
-          <FeatureCard icon={<FaSackDollar size={26} />} text="Value for Money" />
+          <FeatureCard
+            icon={<GiBurningBook size={26} />}
+            text="20K+ Online Courses"
+          />
+          <FeatureCard
+            icon={<SiOpenaccess size={26} />}
+            text="Lifetime Access"
+          />
+          <FeatureCard
+            icon={<GiBurningBook size={26} />}
+            text="Lifetime Support"
+          />
+          <FeatureCard
+            icon={<RiUserCommunityFill size={26} />}
+            text="Community Support"
+          />
+          <FeatureCard
+            icon={<FaSackDollar size={26} />}
+            text="Value for Money"
+          />
         </div>
       </div>
 
       {/* ================= POPULAR COURSES ================= */}
       <div className="py-16 px-6 bg-primary dark:bg-surface overflow-x-hidden">
         <div className="max-w-7xl mx-auto">
-
           <h2 className="text-3xl md:text-4xl font-bold text-center text-black dark:text-white mb-4">
             Most Popular Courses
           </h2>
@@ -108,6 +116,7 @@ const Home = () => {
                   thumbnail={course?.thumbnail}
                   category={course.category}
                   rating={course.rating || 4.5}
+                  courseId={course._id}
                 />
               ))}
             </div>

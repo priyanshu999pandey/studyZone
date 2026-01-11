@@ -1,5 +1,6 @@
 import UserProvider from "./UserContext"
-import CourseContext from "./courseContext";
+import CourseContext from "./CourseContext"
+
 
 
 const AppContextProvider = ({children}) =>{

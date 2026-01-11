@@ -1,9 +1,10 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
+import {Link} from "react-router-dom"
 
-const CourseCard = ({ thumbnail, title, category, rating=2  }) => {
+const CourseCard = ({ thumbnail, title, category, rating, courseId   }) => {
   return (
-    <div
+    <Link to={`/view-course/${courseId}`}
       className="
         w-full 
         max-w-xs 
@@ -45,7 +46,7 @@ const CourseCard = ({ thumbnail, title, category, rating=2  }) => {
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

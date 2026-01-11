@@ -315,7 +315,7 @@ export const googleAuth = async (req, res) => {
       client_secret: process.env.GOOGLE_CLIENT_SECRET,
       code,
       grant_type: "authorization_code",
-      redirect_uri: "postmessage",
+      redirect_uri: "https://study-zone-eight.vercel.app/api/auth/google/callback"
     });
 
     // console.log("response--",response);

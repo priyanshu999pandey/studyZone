@@ -153,7 +153,7 @@ export const getCourseById = async(req,res)=>{
 
     const {courseId} = req.params;
 
-    const course = await Course.findById(courseId);
+    const course = await Course.findById(courseId).populate("lectures");
      if(!course){
       return res.status(400).json({
         message:"Course Not Found",
@@ -205,5 +205,7 @@ export const removeCourse = async(req,res)=>{
     });
   }
 }  
+
+
 
 

@@ -7,19 +7,22 @@ import cors from "cors"
 import userRouter from "./routes/user.router.js";
 import courseRouter from "./routes/course.router.js";
 import lectureRouter from "./routes/lecture.router.js";
+import paymentRouter from "./routes/payment.router.js";
 
  dotenv.config()
+ 
  const app = express()
  app.use(cookieParser()); 
  app.use(express.json());
  app.use(cors({
-   origin:"http://localhost:5173",
+   origin:"https://study-zone-fe.vercel.app",
    credentials:true
  }))
  app.use("/api/auth",authRouter)
  app.use("/api/user",userRouter)
  app.use("/api/course",courseRouter)
  app.use("/api/lecture",lectureRouter)
+ app.use("/api/payment",paymentRouter)
  
  const port =process.env.PORT
 
@@ -28,6 +31,6 @@ import lectureRouter from "./routes/lecture.router.js";
  })
 
  app.listen(port,()=>{
-    console.log("server started");
+    console.log(`server started at port ${port}`);
     dbConnect()
  })

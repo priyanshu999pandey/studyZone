@@ -1,4 +1,6 @@
+import User from "../models/user.model.js";
 import stripe from "../config/stripe.js";
+import Course from "../models/course.model.js";
 
  export const checkOutController = async (req, res) => {
   try {
@@ -53,6 +55,32 @@ export const stripeWebhook = async(req,res)=>{
         const signature = req.headers["stripe-signature"];
 
         let event;
+
+        try {
+          event = stripe.webhooks.constructEvent(
+            req.body,
+            signature,
+            process.env.SRIPE_WEBHOOK_SECRET
+          );
+        } catch (error) {
+          return res.status(400).send(`webhook error ${error.message}`)
+        }
+
+        if(event.type === "checkout.session.completed"){
+          const session = event.data.object;
+
+          const userId = session.metadata.userId
+          const courseId = session.metadata.courseId
+
+           await User.findByIdAndUpdate(userId,{
+              $addToSet:{enrolledCourses:courseId}
+           })
+
+           await Course.findByIdAndUpdate(courseId,{
+            $addToSet:{enrolledStudents:userId}
+           })
+
+        }
 
       
     } catch (error) {

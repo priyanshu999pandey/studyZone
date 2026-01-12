@@ -31,47 +31,46 @@ export const getCurrentUser = async(req,res)=>{
     }
 }
 
-export const editProfile = async(req,res)=>{
-    try {
 
-        const userId = req.userId;
+export const editProfile = async (req, res) => {
+  try {
+    const userId = req.userId;  
 
-        const {name,email,description} = req.body;
+    const { name, email, description } = req.body;
 
-        let photoUrl;
+    const updateData = {
+      name,
+      email,
+      description,
+    };
 
-        if(req.file){
-             photoUrl = await uploadOnCloudinary(req.file.path);    
-        }
-        console.log("req.file",req.file)
-        console.log("photourl",photoUrl)
+    if (req.file) {
+      const photoUrl = await uploadOnCloudinary(req.file.buffer);
+      updateData.photoUrl = photoUrl;   // ✅ only update when file exists
+    }
 
-        const user = await User.findByIdAndUpdate(userId,{
-            name,
-            email,
-            description,
-            photoUrl
-        },{new:true})
+    const user = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+    });
 
-        if(!user){
-            return res.status(400).json({
-                message:"User not found",
-                success:false
-            })
-        }
+    if (!user) {
+      return res.status(400).json({
+        message: "User not found",
+        success: false,
+      });
+    }
 
-        return res.status(200).json({
-            message:"profile Updated sucessfully",
-            success:true,
-            user,
-        })
+    return res.status(200).json({
+      message: "Profile updated successfully",
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.error("Edit profile error:", error);
 
-        
-    } catch (error) {
-      return res.status(500).json({
-      message: `editprofile error: ${error.message}`,
-      error: true,
+    return res.status(500).json({
+      message: `editProfile error: ${error.message}`,
       success: false,
     });
-    }
-}
+  }
+};

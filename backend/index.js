@@ -12,10 +12,12 @@ import paymentRouter from "./routes/payment.router.js";
  dotenv.config()
 
  const app = express()
+  // app.use("/api/payment",paymentRouter)
+  
  app.use(cookieParser()); 
  app.use(express.json());
  app.use(cors({
-   origin:"https://study-zone-fe.vercel.app",
+   origin:process.env.CLIENT_URL,
    credentials:true
  }))
  app.use("/api/auth",authRouter)
@@ -30,5 +32,10 @@ import paymentRouter from "./routes/payment.router.js";
     res.send("Hello from Server")
  })
 
-dbConnect();
+ app.listen(port,()=>{
+  console.log(`server is running at port no ${port}`)
+  dbConnect();
+ })
+
+
 export default app;

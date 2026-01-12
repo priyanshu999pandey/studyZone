@@ -38,7 +38,7 @@ export const createCourse = async(req,res)=>{
 
 export const getPublishedCourses = async(req,res) =>{
   try {
-    const userId = req.userId;
+    // const userId = req.userId;
     const publishedCourses = await Course.find({isPublished:true});
 
     if(!publishedCourses){
@@ -51,7 +51,7 @@ export const getPublishedCourses = async(req,res) =>{
     return res.status(200).json({
       message:"course founded successfully",
       success:true,
-      user:userId,
+      // user:userId,
       data:publishedCourses,
     })
 

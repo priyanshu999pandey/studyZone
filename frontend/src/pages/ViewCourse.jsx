@@ -8,8 +8,11 @@ import {
   FaStar,
 } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
+import { useSelector } from "react-redux";
 
 const ViewCourse = () => {
+  const userId = useSelector((store)=>store.user.userData._id)
+  console.log("userId aagya",user)
   const { courseId } = useParams();
   const navigate = useNavigate();
 
@@ -70,6 +73,15 @@ const ViewCourse = () => {
       console.log(error);
     }
   };
+
+  const handleEnrollCourse = async()=>{
+    try {
+       const res = await axios.post(`${import.meta.env.VITE_API_URL}`)
+    
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   if (loading) {
     return (
@@ -136,7 +148,7 @@ const ViewCourse = () => {
             ₹ {course.price || 0}
           </div>
 
-          <button className="w-full py-3 rounded-xl bg-primary hover:scale-105 transition">
+          <button className="w-full py-3 rounded-xl bg-primary hover:scale-105 transition" onClick={handleEnrollCourse}>
             Enroll Now
           </button>
         </div>
